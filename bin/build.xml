@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<project name="My1stHibernate" default="build" basedir=".">
+
+	<property name="base.dir" value="." />
+	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="lib" />
+	<property name="build.dir" value="classes" />
+
+	<path id="myclasspath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="${build.dir}" />
+	</path>
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="build" depends="init" description="compile the source files">
+		<javac classpathref="myclasspath" srcdir="${src.dir}" destdir="${build.dir}" />
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="run" depends="build">
+		<java classpathref="myclasspath" classname="Test" fork="true" />
+	</target>
+
+	<target name="clean">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${build.dir}" />
+		</delete>
+	</target>
+
+</project>

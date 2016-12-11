@@ -1,0 +1,27 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+ "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+ "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- 指定连接数据库所用的驱动 -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<!-- 指定连接数据库的url，hibernate连接的数据库名 -->
+		<property name="connection.url">jdbc:mysql://localhost/my_test</property>
+		<property name="connection.useUnicode">true</property>
+		<!-- <property name="connection.characterEncoding">gbk</property> -->
+		<!-- 指定连接数据库的用户名 -->
+		<property name="connection.username">root</property>
+		<!-- 指定连接数据库的密码 -->
+		<property name="connection.password">qwert</property>
+
+		<!-- 指定数据库方言 -->
+		<property name="dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+		<!-- 根据需要自动创建数据库 -->
+		<property name="hbm2ddl.auto">update</property>
+		<!-- 显示Hibernate持久化操作所生成的SQL -->
+		<property name="show_sql">true</property>
+		<!-- 将SQL脚本进行格式化后再输出 -->
+		<property name="hibernate.format_sql">true</property>
+		<mapping resource="Customer.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
