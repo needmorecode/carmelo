@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding = "utf-8"?>
+<something-else-entirely>
+	<proxool>
+		<alias>proxool</alias>
+		<driver-url>jdbc:mysql://localhost:3306/my_test</driver-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver-properties>
+			<property name="user" value="root" />
+			<property name="password" value="qwert" />
+		</driver-properties>
+		<house-keeping-sleep-time>900000</house-keeping-sleep-time>
+		<maximum-connection-count>10</maximum-connection-count>
+		<minimum-connection-count>3</minimum-connection-count>
+		<prototype-count>3</prototype-count>
+		<simultaneous-build-throttle>4</simultaneous-build-throttle>
+		<statistics-log-level>INFO</statistics-log-level>
+	</proxool>
+</something-else-entirely>
