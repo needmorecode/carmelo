@@ -11,8 +11,8 @@ Build
 1.  git clone https://github.com/needmorecode/game-server-framework.git
 2.  cd carmelo
 3.  mvn eclipse:eclipse
-4.  eclipse -> file -> import -> git -> select repository and import carmelo project.
-5.  carmelo project in eclipse -> right click on pom.xml -> run as -> maven build
+4.  Eclipse -> file -> import -> git -> select repository and import carmelo project
+5.  carmelo project in Eclipse -> right click on pom.xml -> run as -> maven build
 
 Test
 -----
