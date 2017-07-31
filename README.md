@@ -18,5 +18,5 @@ Test
 -----
 1.  cd src/main/java/carmelo/examples
 2.  execute /server/my_test_user.sql in MySQL
-3.  run/debug /server/ServerMain.java in Eclipse
-4.  run/debug /client/TcpClientMain.java or /client/HttpClientMain.java in Eclipse
+3.  run or debug /server/ServerMain.java in Eclipse
+4.  run or debug /client/TcpClientMain.java or /client/HttpClientMain.java in Eclipse
