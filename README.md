@@ -8,7 +8,7 @@ Start from here
 
 Build
 -----
-1.  git clone https://github.com/needmorecode/game-server-framework.git
+1.  git clone https://github.com/needmorecode/carmelo.git
 2.  cd carmelo
 3.  mvn eclipse:eclipse
 4.  Eclipse -> file -> import -> git -> select repository and import carmelo project
