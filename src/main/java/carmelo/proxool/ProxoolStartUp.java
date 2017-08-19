@@ -6,7 +6,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class ProxoolStartUp extends DriverManagerDataSource implements InitializingBean{
 
-	@Override
 	public void afterPropertiesSet() throws Exception {
 		try{
 			String classpath = Thread.currentThread().getContextClassLoader().getResource("").getPath();

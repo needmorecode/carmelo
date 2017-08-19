@@ -18,17 +18,14 @@ public class CarmeloChunkedInput implements ChunkedInput<HttpContent>{
 	
 	private int id = 0;
 
-	@Override
 	public boolean isEndOfInput() throws Exception {
 		//return queue.isEmpty();
 		return false;
 	}
 
-	@Override
 	public void close() throws Exception {
 	}
 
-	@Override
 	public HttpContent readChunk(ChannelHandlerContext ctx) throws Exception {
 		return queue.poll();
 	}
