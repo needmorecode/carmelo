@@ -11,7 +11,7 @@ Build
 1.  git clone https://github.com/needmorecode/carmelo.git
 2.  cd carmelo
 3.  mvn eclipse:eclipse
-4.  Eclipse -> file -> import -> maven -> existing maven projects -> select repository and import carmelo project
+4.  Eclipse -> file -> import -> maven -> existing maven projects -> select carmelo project
 5.  carmelo project in Eclipse -> right click on pom.xml -> run as -> maven install
 
 Test
