@@ -4,15 +4,15 @@ Carmelo is a fast, scalable Java server framework designed for online games. It 
 
 Start from here
 ----------------------------
-**Pre-requisites**: Please have Maven 3.x, Eclipse and MySQL installed. 
+**Pre-requisites**: Please have Maven 3.x, Eclipse and MySQL 5.6.x installed. 
 
 Build
 -----
 1.  git clone https://github.com/needmorecode/carmelo.git
 2.  cd carmelo
 3.  mvn eclipse:eclipse
-4.  Eclipse -> file -> import -> git -> select repository and import carmelo project
-5.  carmelo project in Eclipse -> right click on pom.xml -> run as -> maven build
+4.  Eclipse -> file -> import -> maven -> existing maven projects -> select repository and import carmelo project
+5.  carmelo project in Eclipse -> right click on pom.xml -> run as -> maven install
 
 Test
 -----
