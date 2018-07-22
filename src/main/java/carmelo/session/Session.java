@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Session {
 	
-	public static final String USER_ID = "userId";
-	
 	private String sessionId;
 	
 	private Map<String, Object> params = new ConcurrentHashMap<String, Object>();
+	
+	private long lastAccessTime = System.currentTimeMillis();
 
 	public Session(String sessionId){
 		this.sessionId = sessionId;
@@ -29,6 +29,14 @@ public class Session {
 
 	public void setParams(Map<String, Object> params) {
 		this.params = params;
+	}
+
+	public boolean isTimeout() {
+		return System.currentTimeMillis() - this.lastAccessTime >= SessionConstants.SESSION_TIME_OUT_TIME;
+	}
+	
+	public void access() {
+		this.lastAccessTime = System.currentTimeMillis();
 	}
 
 	

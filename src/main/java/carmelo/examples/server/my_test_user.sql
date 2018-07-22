@@ -6,7 +6,7 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `name` (`name`) USING BTREE
+  UNIQUE INDEX `name` (`name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

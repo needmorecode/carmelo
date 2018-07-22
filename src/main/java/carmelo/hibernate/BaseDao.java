@@ -282,7 +282,7 @@ public class BaseDao<T, PK extends java.io.Serializable> {
 		return list;
 	}
 
-	public int excuteBySql(String sql) {
+	public int executeBySql(String sql) {
 		int result;
 		SQLQuery query = this.getSession().createSQLQuery(sql);
 		result = query.executeUpdate();
