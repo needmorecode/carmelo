@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import carmelo.examples.server.login.dao.UserDao;
 import carmelo.examples.server.login.domain.User;
 import carmelo.examples.server.login.dto.TestDto;
+import carmelo.json.JsonBuilder;
 import carmelo.json.JsonUtil;
 import carmelo.json.ResponseType;
 import carmelo.servlet.Request;
@@ -37,7 +38,8 @@ public class UserService {
 		user.setName(name);
 		user.setPassword(password);
 		userDao.save(user);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		
+		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
 	}
 	
 	/**
@@ -61,8 +63,13 @@ public class UserService {
 		Users.addUser(userId, sessionId);
 		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("sessionId: " + sessionId);
-		// should return sessionId TODO
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		
+		JsonBuilder builder = new JsonBuilder();
+		builder.startObject();
+		builder.writeKey("sessionId");
+		builder.writeValue(sessionId);
+		builder.endObject();
+		return JsonUtil.buildJson(ResponseType.SUCCESS, builder.toString());
 	}
 	
 	/**
@@ -77,7 +84,8 @@ public class UserService {
 		
 		SessionManager.getInstance().destroySession(sessionId);
 		Users.removeUser(userId);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		
+		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
 	}
 	
 	/**
@@ -94,7 +102,7 @@ public class UserService {
 		}
 		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("reconnect success");
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
 	}
 	
 	@Transactional
@@ -102,7 +110,7 @@ public class UserService {
 //		User user =userDao.get(1);
 //		userDao.getSession().evict(user);
 //		user = userDao.get(1);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
 	}
 	
 	@Transactional
@@ -111,6 +119,6 @@ public class UserService {
 //		user.setName("xxx");
 //		user.setPassword("xxx");
 //		userDao.update(user);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, new TestDto(1, "name"));
+		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
 	}
 }

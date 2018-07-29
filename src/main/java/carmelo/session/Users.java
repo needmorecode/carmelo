@@ -31,5 +31,11 @@ public class Users {
 		String sessionId = uid2sidMap.remove(userId);
 		sid2uidMap.remove(sessionId);
 	}
+	
+//	public static void push(Integer userId, String command) {
+//		String sessionId = getSessionId(userId);
+//		Session session = SessionManager.getInstance().getSession(sessionId);
+//		session
+//	}
 
 }

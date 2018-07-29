@@ -10,7 +10,7 @@ public class TcpClientEncoder extends MessageToByteEncoder<Request> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Request request, ByteBuf out) throws Exception {
         
-    	// encoding format£ºtotalLength + requestId + commandLength + command + params
+    	// encoding format: totalLength + requestId + commandLength + command + params
         int requestId = request.getId();
 		String command = request.getCommand();
 		String params = request.getParams();

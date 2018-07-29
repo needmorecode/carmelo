@@ -22,7 +22,7 @@ public class TcpDecoder extends ByteToMessageDecoder {
 		}
 		in.markReaderIndex();
 
-		// encoding format£ºtotalLength + requestId + commandLength + command + params
+		// encoding format: totalLength + requestId + commandLength + command + params
 		int totalLength = in.readInt();
 		if (in.readableBytes() < totalLength) {
 			in.resetReaderIndex();

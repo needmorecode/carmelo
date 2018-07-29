@@ -15,6 +15,11 @@ import carmelo.session.Users;
 @Component
 public class HeartbeatAction {
 
+	/**
+	 * heartbeat
+	 * @param request
+	 * @return
+	 */
 	public byte[] heartbeat(Request request) {
 		Session session = SessionManager.getInstance().getSession(request.getSessionId());
 		session.access();

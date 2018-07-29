@@ -31,6 +31,7 @@ public class TcpClientDecoder extends ByteToMessageDecoder {
 		byte[] contentBytes = new byte[contentLength];
 		in.readBytes(contentBytes);
 		Response response = new Response(requestId, contentBytes);
+		System.err.println("receive reponse:" + requestId + " " + new String(contentBytes));
 		out.add(response);
 	}
 }

@@ -44,6 +44,9 @@ public class Servlet {
 	
 	private static Map<String, ActionInvocation> actionMap = new HashMap<String, ActionInvocation>();
 	
+	/**
+	 * initiation
+	 */
 	public void init(){
 		String scanActionPackage = Configuration.getProperty(Configuration.SCAN_ACTION_PACKAGE);
 		Set<Class<?>> classes = getActionClasses(scanActionPackage);
@@ -85,7 +88,7 @@ public class Servlet {
 					String paramName = ((SessionParameter)annotation).name();
 					Attribute<String> attr = request.getCtx().attr(SessionConstants.SESSION_ID);
 					String sessionId = attr.get();
-					// TODO 若这里取不到就要返回，拦截器
+					// TODO should return if null
 					Session session = SessionManager.getInstance().getSession(sessionId);
 					Object paramValue = session.getParams().get(paramName);
 					params.add(paramValue);

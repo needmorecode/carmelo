@@ -27,7 +27,7 @@ import carmelo.session.SessionManager;
 import carmelo.session.Users;
 
 /**
- * an example action which is used for a user to login, loginout, ...
+ * an example action which is used for a user to register, login, loginout, ...
  * 
  * @author needmorecode
  *

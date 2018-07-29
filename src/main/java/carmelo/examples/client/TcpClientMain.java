@@ -84,10 +84,11 @@ public class TcpClientMain extends Thread{
         
     }
     
-    public void sendMsg(String command, String params){
-    	Request request = new Request(0, command, params, "0", ctx);
+    public void sendMsg(int requestId, String command, String params){
+    	Request request = new Request(requestId, command, params, "0", ctx);
     	ctx.write(request);
     	ctx.flush();
+    	System.err.println("send request:" + requestId + " " + command + " " + params);
     }
 
     public static void main(String[] args) throws Exception {
@@ -104,6 +105,7 @@ public class TcpClientMain extends Thread{
         client.start();
         System.err.println("try typing in following actions and have fun!\nuser!login name=1&password=123\nuser!logout\nuser!reconnect sessionId=2\n");
         Scanner scanner = new Scanner(System.in);
+        int requestId = 1;
         while(true){
         	 String line = scanner.nextLine(); 
              if (line.equals("exit")) {
@@ -118,7 +120,8 @@ public class TcpClientMain extends Thread{
             	 params = sc.next();
              else
             	 params = "";
-             client.sendMsg(command, params);
+             client.sendMsg(requestId, command, params);
+             requestId++;
         }
     }
 
