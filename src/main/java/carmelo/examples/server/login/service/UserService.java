@@ -32,14 +32,14 @@ public class UserService {
 	public byte[] register(String name, String password) {
 		User user = userDao.getUser(name);
 		if (user != null)
-			return JsonUtil.buildJson(ResponseType.FAIL, "already registered");
+			return JsonUtil.buildJsonFail("already registered");
 		
 		user = new User();
 		user.setName(name);
 		user.setPassword(password);
 		userDao.save(user);
 		
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 	
 	/**
@@ -52,9 +52,9 @@ public class UserService {
 	public byte[] login(String name, String password, Request request) {
 		User user = userDao.getUser(name);
 		if (user == null)
-			return JsonUtil.buildJson(ResponseType.FAIL, "user not exists");
+			return JsonUtil.buildJsonFail("user not exists");
 		if (!user.getPassword().equals(password))
-			return JsonUtil.buildJson(ResponseType.FAIL, "wrong password");
+			return JsonUtil.buildJsonFail("wrong password");
 		
 		int userId = user.getId();
 		Session session = SessionManager.getInstance().createSession();
@@ -64,13 +64,15 @@ public class UserService {
 		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("sessionId: " + sessionId);
 		
-		JsonBuilder builder = new JsonBuilder();
+		JsonBuilder builder = JsonUtil.initJsonBuilder(ResponseType.SUCCESS);
 		builder.startObject();
 		builder.writeKey("sessionId");
 		builder.writeValue(sessionId);
 		builder.endObject();
-		return JsonUtil.buildJson(ResponseType.SUCCESS, builder.toString());
+		builder.endObject();
+		return builder.toBytes();
 	}
+	
 	
 	/**
 	 * logout
@@ -80,12 +82,12 @@ public class UserService {
 	public byte[] logout(int userId){
 		String sessionId = Users.getSessionId(userId);
 		if (sessionId == null)
-			return JsonUtil.buildJson(ResponseType.FAIL, "already offline");
+			return JsonUtil.buildJsonFail("already offline");
 		
 		SessionManager.getInstance().destroySession(sessionId);
 		Users.removeUser(userId);
 		
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 	
 	/**
@@ -98,11 +100,11 @@ public class UserService {
 		Session session = SessionManager.getInstance().getSession(sessionId);
 		if (session == null){
 			System.out.println("reconnect fail");
-			return JsonUtil.buildJson(ResponseType.FAIL, "reconnect fail");
+			return JsonUtil.buildJsonFail("reconnect fail");
 		}
 		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("reconnect success");
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 	
 	@Transactional
@@ -110,7 +112,7 @@ public class UserService {
 //		User user =userDao.get(1);
 //		userDao.getSession().evict(user);
 //		user = userDao.get(1);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 	
 	@Transactional
@@ -119,6 +121,6 @@ public class UserService {
 //		user.setName("xxx");
 //		user.setPassword("xxx");
 //		userDao.update(user);
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 }

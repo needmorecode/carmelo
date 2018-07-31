@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.JSONSerializer;
 
 public class JsonUtil {
 
-	public static byte[] buildJson(ResponseType responseType, String data) {
+	public static byte[] buildJson(ResponseType responseType, Object data) {
 		JsonBuilder ja = new JsonBuilder();
 		ja.startObject();
 		ja.writeKey("responseType");
@@ -16,6 +16,47 @@ public class JsonUtil {
 		ja.endObject();
 		return ja.toBytes();
 	}
+	
+/*	public static byte[] buildJson(ResponseType responseType, Object data) {
+		ResponseDto response = new ResponseDto();
+		response.setResponeType(responseType.getType());
+		response.setData(data);
+		String json = JSON.toJSONString(response);
+		return json.getBytes();
+	}*/
+	
+	public static JsonBuilder initJsonBuilder(ResponseType responseType) {
+		JsonBuilder ja = new JsonBuilder();
+		ja.startObject();
+		ja.writeKey("responseType");
+		ja.writeValue(responseType.getType());
+		ja.writeKey("data");
+		return ja;
+	}
+	
+	public static byte[] buildJsonSuccess() {
+		JsonBuilder ja = new JsonBuilder();
+		ja.startObject();
+		ja.writeKey("responseType");
+		ja.writeValue(ResponseType.SUCCESS.getType());
+		ja.writeKey("data");
+		ja.writeValue("");
+		ja.endObject();
+		return ja.toBytes();
+	}
+	
+	public static byte[] buildJsonFail(String msg) {
+		JsonBuilder ja = new JsonBuilder();
+		ja.startObject();
+		ja.writeKey("responseType");
+		ja.writeValue(ResponseType.FAIL.getType());
+		ja.writeKey("data");
+		ja.writeValue(msg);
+		ja.endObject();
+		return ja.toBytes();
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		JsonBuilder ja1 = new JsonBuilder();

@@ -99,7 +99,7 @@ public class JsonBuilder{
 		builder.writeKey("sessionId");
 		builder.writeValue("123456");
 		builder.endObject();
-		System.out.println(new String(JsonUtil.buildJson(ResponseType.SUCCESS, builder.toString())));
+		//System.out.println(new String(JsonUtil.buildJson(ResponseType.SUCCESS, builder.toString())));
 	}
 
 }

@@ -23,6 +23,6 @@ public class HeartbeatAction {
 	public byte[] heartbeat(Request request) {
 		Session session = SessionManager.getInstance().getSession(request.getSessionId());
 		session.access();
-		return JsonUtil.buildJson(ResponseType.SUCCESS, "");
+		return JsonUtil.buildJsonSuccess();
 	}
 }
