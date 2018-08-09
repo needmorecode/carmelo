@@ -83,8 +83,8 @@ public class UserAction {
 	 * @param id
 	 * @return
 	 */
-	public byte[] doSomething(@PassParameter(name = "id") int id){
-		return userService.doSomething(id);
+	public byte[] doSomething(@SessionParameter(name = SessionConstants.USER_ID)int userId, @PassParameter(name = "id") int id){
+		return userService.doSomething(userId, id);
 	}
 	
 	/**

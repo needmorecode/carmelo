@@ -25,11 +25,22 @@ public class JsonUtil {
 		return json.getBytes();
 	}*/
 	
-	public static JsonBuilder initJsonBuilder(ResponseType responseType) {
+	public static JsonBuilder initResponseJsonBuilder() {
 		JsonBuilder ja = new JsonBuilder();
 		ja.startObject();
 		ja.writeKey("responseType");
-		ja.writeValue(responseType.getType());
+		ja.writeValue(ResponseType.SUCCESS.getType());
+		ja.writeKey("data");
+		return ja;
+	}
+	
+	public static JsonBuilder initPushJsonBuilder(String moduleName) {
+		JsonBuilder ja = new JsonBuilder();
+		ja.startObject();
+		ja.writeKey("responseType");
+		ja.writeValue(ResponseType.PUSH.getType());
+		ja.writeKey("module");
+		ja.writeValue(moduleName);
 		ja.writeKey("data");
 		return ja;
 	}

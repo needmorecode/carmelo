@@ -69,6 +69,7 @@ public class Servlet {
 	 * @return
 	 */
 	public Response service(Request request){
+		// TODO should return even if exception occurs
 		ActionInvocation invocation = actionMap.get(request.getCommand());
 		Object object = invocation.getObject();
 		Method method = invocation.getMethod();
@@ -86,7 +87,7 @@ public class Servlet {
 				}
 				else if (annotation instanceof SessionParameter){
 					String paramName = ((SessionParameter)annotation).name();
-					Attribute<String> attr = request.getCtx().attr(SessionConstants.SESSION_ID);
+					Attribute<String> attr = request.getCtx().channel().attr(SessionConstants.SESSION_ID);
 					String sessionId = attr.get();
 					// TODO should return if null
 					Session session = SessionManager.getInstance().getSession(sessionId);

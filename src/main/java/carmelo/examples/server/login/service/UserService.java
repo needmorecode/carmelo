@@ -15,6 +15,7 @@ import carmelo.session.Session;
 import carmelo.session.SessionConstants;
 import carmelo.session.SessionManager;
 import carmelo.session.Users;
+import io.netty.channel.Channel;
 
 @Component
 public class UserService {
@@ -61,10 +62,12 @@ public class UserService {
 		session.getParams().put(SessionConstants.USER_ID, userId);
 		String sessionId = session.getSessionId();
 		Users.addUser(userId, sessionId);
-		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
+		
+		session.setChannel(request.getCtx().channel());
+		session.getChannel().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("sessionId: " + sessionId);
 		
-		JsonBuilder builder = JsonUtil.initJsonBuilder(ResponseType.SUCCESS);
+		JsonBuilder builder = JsonUtil.initResponseJsonBuilder();
 		builder.startObject();
 		builder.writeKey("sessionId");
 		builder.writeValue(sessionId);
@@ -98,20 +101,45 @@ public class UserService {
 	 */
 	public byte[] reconnect(String sessionId, Request request){
 		Session session = SessionManager.getInstance().getSession(sessionId);
-		if (session == null){
+		// can't find session
+		if (session == null) {
 			System.out.println("reconnect fail");
 			return JsonUtil.buildJsonFail("reconnect fail");
 		}
-		request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
+		
+		// same channel, different sessionId
+		String oldSessionId = request.getSessionId();
+		Channel oldChannel = request.getCtx().channel();
+		if (!oldSessionId.equals(sessionId) && session.getChannel() == oldChannel) {
+			SessionManager.getInstance().destroySession(oldSessionId);
+		}
+			
+		// same session, different channel
+		if (oldSessionId.equals(sessionId) && session.getChannel() != oldChannel) {
+			oldChannel.close();
+		}
+		
+		//request.getCtx().attr(SessionConstants.SESSION_ID).set(sessionId);
+		session.setChannel(request.getCtx().channel());
+		session.getChannel().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("reconnect success");
 		return JsonUtil.buildJsonSuccess();
 	}
 	
 	@Transactional
-	public byte[] doSomething(int id){
+	public byte[] doSomething(int userId, int id){
 //		User user =userDao.get(1);
 //		userDao.getSession().evict(user);
 //		user = userDao.get(1);
+		JsonBuilder builder = JsonUtil.initPushJsonBuilder("user");
+		builder.startObject();
+		builder.writeKey("pushSomethingKey");
+		builder.writeValue("pushSomethingValue");
+		builder.endObject();
+		builder.endObject();
+		
+		Users.push(userId, builder.toBytes());
+		
 		return JsonUtil.buildJsonSuccess();
 	}
 	

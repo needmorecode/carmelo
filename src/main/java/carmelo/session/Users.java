@@ -3,6 +3,8 @@ package carmelo.session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import carmelo.servlet.Response;
+
 /**
  * all online users
  * 
@@ -32,10 +34,15 @@ public class Users {
 		sid2uidMap.remove(sessionId);
 	}
 	
-//	public static void push(Integer userId, String command) {
-//		String sessionId = getSessionId(userId);
-//		Session session = SessionManager.getInstance().getSession(sessionId);
-//		session
-//	}
+	public static void push(Integer userId, byte[] content) {
+		String sessionId = getSessionId(userId);
+		if (sessionId != null) {
+			Session session = SessionManager.getInstance().getSession(sessionId);
+			if (session != null) {
+				Response response = new Response(0, content);
+				session.push(response);
+			}
+		}
+	}
 
 }
