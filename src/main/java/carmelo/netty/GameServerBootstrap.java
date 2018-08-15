@@ -34,7 +34,7 @@ public class GameServerBootstrap {
 					ServerBootstrap b2 = new ServerBootstrap();
 					b2.group(bossGroup2, workerGroup2)
 							.channel(NioServerSocketChannel.class)
-							.childHandler(new HttpServerInitializer(servlet, false));
+							.childHandler(new HttpServerInitializer(servlet));
 					int port = Integer.parseInt(Configuration.getProperty(Configuration.HTTP_PORT));
 					b2.bind(port).sync().channel().closeFuture().sync();
 				} catch (InterruptedException e) {
@@ -46,7 +46,7 @@ public class GameServerBootstrap {
 			}
 		}.start();
 		
-		// http push channel
+/*		// http push channel
 		new Thread() {
 			public void run() {
 				EventLoopGroup bossGroup2 = new NioEventLoopGroup(1);
@@ -55,7 +55,7 @@ public class GameServerBootstrap {
 					ServerBootstrap b2 = new ServerBootstrap();
 					b2.group(bossGroup2, workerGroup2)
 							.channel(NioServerSocketChannel.class)
-							.childHandler(new HttpServerInitializer(servlet, true));
+							.childHandler(new HttpServerInitializer(servlet));
 					int port = Integer.parseInt(Configuration.getProperty(Configuration.HTTP_PUSH_PORT));
 					b2.bind(port).sync().channel().closeFuture().sync();
 				} catch (InterruptedException e) {
@@ -65,7 +65,7 @@ public class GameServerBootstrap {
 					workerGroup2.shutdownGracefully();
 				}
 			}
-		}.start();
+		}.start();*/
 
 		// tcp channel
 		final EventLoopGroup bossGroup = new NioEventLoopGroup(1);

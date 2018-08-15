@@ -7,14 +7,14 @@ import com.alibaba.fastjson.serializer.JSONSerializer;
 public class JsonUtil {
 
 	public static byte[] buildJson(ResponseType responseType, Object data) {
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(responseType.getType());
-		ja.writeKey("data");
-		ja.writeValue(data);
-		ja.endObject();
-		return ja.toBytes();
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(responseType.getType());
+		jb.writeKey("data");
+		jb.writeValue(data);
+		jb.endObject();
+		return jb.toBytes();
 	}
 	
 /*	public static byte[] buildJson(ResponseType responseType, Object data) {
@@ -26,62 +26,62 @@ public class JsonUtil {
 	}*/
 	
 	public static JsonBuilder initResponseJsonBuilder() {
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(ResponseType.SUCCESS.getType());
-		ja.writeKey("data");
-		return ja;
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.SUCCESS.getType());
+		jb.writeKey("data");
+		return jb;
 	}
 	
 	public static JsonBuilder initPushJsonBuilder(String moduleName) {
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(ResponseType.PUSH.getType());
-		ja.writeKey("module");
-		ja.writeValue(moduleName);
-		ja.writeKey("data");
-		return ja;
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.PUSH.getType());
+		jb.writeKey("module");
+		jb.writeValue(moduleName);
+		jb.writeKey("data");
+		return jb;
 	}
 	
 	public static byte[] buildJsonSuccess() {
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(ResponseType.SUCCESS.getType());
-		ja.writeKey("data");
-		ja.writeValue("");
-		ja.endObject();
-		return ja.toBytes();
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.SUCCESS.getType());
+		jb.writeKey("data");
+		jb.writeValue("");
+		jb.endObject();
+		return jb.toBytes();
 	}
 	
 	public static byte[] buildJsonFail(String msg) {
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(ResponseType.FAIL.getType());
-		ja.writeKey("data");
-		ja.writeValue(msg);
-		ja.endObject();
-		return ja.toBytes();
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.FAIL.getType());
+		jb.writeKey("data");
+		jb.writeValue(msg);
+		jb.endObject();
+		return jb.toBytes();
 	}
 	
 	
 	
 	public static void main(String[] args) {
-		JsonBuilder ja1 = new JsonBuilder();
-		ja1.startObject();
-		ja1.endObject();
+		JsonBuilder jb1 = new JsonBuilder();
+		jb1.startObject();
+		jb1.endObject();
 		
-		JsonBuilder ja = new JsonBuilder();
-		ja.startObject();
-		ja.writeKey("responseType");
-		ja.writeValue(1);
-		ja.writeKey("data");
-		ja.writeValue(new String(ja1.toBytes()));
-		ja.endObject();
-		System.out.println(new String(ja.toBytes()));
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(1);
+		jb.writeKey("data");
+		jb.writeValue(new String(jb1.toBytes()));
+		jb.endObject();
+		System.out.println(new String(jb.toBytes()));
 	}
 
 }

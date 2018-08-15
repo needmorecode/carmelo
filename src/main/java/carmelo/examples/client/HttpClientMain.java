@@ -44,7 +44,7 @@ public class HttpClientMain {
     }
 
     public void run() throws Exception {
-    	new Thread(){
+ /*   	new Thread(){
     		public void run() {
 		    	Bootstrap b2 = new Bootstrap();
 		    	EventLoopGroup group = new NioEventLoopGroup();
@@ -75,7 +75,7 @@ public class HttpClientMain {
 		            group.shutdownGracefully();
 		        }
     		}
-    	}.start();
+    	}.start();*/
     	
     	
         EventLoopGroup group = new NioEventLoopGroup();

@@ -18,12 +18,8 @@ public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
 	
 	private Servlet servlet;
 	
-	// 是否走推送方式
-	private boolean isChunked;
-	
-    public HttpServerInitializer(Servlet servlet, boolean isChunked){
+    public HttpServerInitializer(Servlet servlet){
     	this.servlet = servlet;
-    	this.isChunked = isChunked;
     }
     
     @Override
@@ -33,13 +29,8 @@ public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("encoder", new HttpResponseEncoder());
         pipeline.addLast("decoder", new HttpRequestDecoder());
         pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-        if (isChunked)
-        	pipeline.addLast("chunkedWriter", new ChunkedWriteHandler());
 
         // and then business logic.
-        if (isChunked)
-        	pipeline.addLast("handler", new HttpServerChunkedHandler());
-        else
-        	pipeline.addLast("handler", new HttpServerHandler(servlet));
+        pipeline.addLast("handler", new HttpServerHandler(servlet));
     }
 }

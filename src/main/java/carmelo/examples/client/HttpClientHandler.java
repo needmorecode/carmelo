@@ -27,14 +27,14 @@ import io.netty.handler.codec.http.HttpVersion;
 public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) {
-		ByteBuf bb = null;
+/*		ByteBuf bb = null;
 		try {
 			bb = Unpooled.wrappedBuffer(new String("id=1").getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}
+		}*/
 		HttpRequest request = new DefaultFullHttpRequest(
-	            HttpVersion.HTTP_1_1, HttpMethod.GET, "http://127.0.0.1:8034/command=user!doSomething?id=1");
+	            HttpVersion.HTTP_1_1, HttpMethod.GET, "http://127.0.0.1:8034/command=user!login?name=1&password=123");
 	    request.headers().set(HttpHeaders.Names.HOST, 8043);
 	    request.headers().set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP);
 

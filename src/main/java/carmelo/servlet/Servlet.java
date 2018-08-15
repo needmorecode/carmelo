@@ -60,7 +60,6 @@ public class Servlet {
 				actionMap.put(actionInvocation.getActionName(), actionInvocation);
 			}
 		}
-		
 	}
 	
 	/**
@@ -70,40 +69,41 @@ public class Servlet {
 	 */
 	public Response service(Request request){
 		// TODO should return even if exception occurs
-		ActionInvocation invocation = actionMap.get(request.getCommand());
-		Object object = invocation.getObject();
-		Method method = invocation.getMethod();
-		List<Object> params = new LinkedList<Object>();
-		for (int i = 0; i <= method.getParameterTypes().length - 1; i++){
-			Class<?> paramType = method.getParameterTypes()[i];
-			if (paramType.equals(Request.class))
-				params.add(request);
-			else{
-				Annotation annotation = method.getParameterAnnotations()[i][0];
-				if (annotation instanceof PassParameter){
-				    String paramName = ((PassParameter)annotation).name();
-				    String paramValue = request.getParamMap().get(paramName);
-				    params.add(ClassUtil.stringToObject(paramValue, paramType));
-				}
-				else if (annotation instanceof SessionParameter){
-					String paramName = ((SessionParameter)annotation).name();
-					Attribute<String> attr = request.getCtx().channel().attr(SessionConstants.SESSION_ID);
-					String sessionId = attr.get();
-					// TODO should return if null
-					Session session = SessionManager.getInstance().getSession(sessionId);
-					Object paramValue = session.getParams().get(paramName);
-					params.add(paramValue);
-				}
-			}
-			
-		}
-		
 		try {
+			ActionInvocation invocation = actionMap.get(request.getCommand());
+			Object object = invocation.getObject();
+			Method method = invocation.getMethod();
+			List<Object> params = new LinkedList<Object>();
+			for (int i = 0; i <= method.getParameterTypes().length - 1; i++){
+				Class<?> paramType = method.getParameterTypes()[i];
+				if (paramType.equals(Request.class))
+					params.add(request);
+				else{
+					Annotation annotation = method.getParameterAnnotations()[i][0];
+					if (annotation instanceof PassParameter){
+					    String paramName = ((PassParameter)annotation).name();
+					    String paramValue = request.getParamMap().get(paramName);
+					    params.add(ClassUtil.stringToObject(paramValue, paramType));
+					}
+					else if (annotation instanceof SessionParameter){
+						String paramName = ((SessionParameter)annotation).name();
+						Attribute<String> attr = request.getCtx().channel().attr(SessionConstants.SESSION_ID);
+						String sessionId = attr.get();
+						// TODO should return if null
+						Session session = SessionManager.getInstance().getSession(sessionId);
+						Object paramValue = session.getParams().get(paramName);
+						params.add(paramValue);
+					}
+				}
+				
+			}
+		
 			byte[] ret = (byte[])method.invoke(object, params.toArray());
 			System.out.println("find method: " + method.getName());
 			return new Response(request.getId(), ret);
 		} catch (Exception e){
 			e.printStackTrace();
+			// TODO return exception state
 			return new Response(request.getId(), null);
 		}
 	}
