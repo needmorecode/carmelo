@@ -133,9 +133,4 @@ public class TcpClientMain extends Thread{
 		this.ctx = ctx;
 	}
 	
-/*	user!login name=1&password=123
-	user!logout
-	user!reconnect sessionId=2
-	*/
-	
 }

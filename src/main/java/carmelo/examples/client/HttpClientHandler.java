@@ -33,11 +33,15 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}*/
+		String url = "http://127.0.0.1:8034/command=user!login?name=1&password=123";
 		HttpRequest request = new DefaultFullHttpRequest(
-	            HttpVersion.HTTP_1_1, HttpMethod.GET, "http://127.0.0.1:8034/command=user!login?name=1&password=123");
+	            HttpVersion.HTTP_1_1, HttpMethod.GET, url);
 	    request.headers().set(HttpHeaders.Names.HOST, 8043);
 	    request.headers().set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP);
-
+	    request.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
+	    
+	    System.out.println("request: " + url);
+	    
 	    ctx.writeAndFlush(request);
 	}
 	
@@ -45,7 +49,7 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
     	
-        if (msg instanceof HttpResponse) {
+/*        if (msg instanceof HttpResponse) {
         	System.out.println("HttpResponse#######################");
             HttpResponse response = (HttpResponse) msg;
 
@@ -67,17 +71,17 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
             } else {
                 System.out.println("CONTENT {");
             }
-        }
+        }*/
         if (msg instanceof HttpContent) {
-        	System.out.println("HttpContent#######################");
+        	//System.out.println("HttpContent#######################");
             HttpContent content = (HttpContent) msg;
 
-            System.out.print(content.content().toString(CharsetUtil.UTF_8));
-            System.out.flush();
+            System.out.print("response: " + content.content().toString(CharsetUtil.UTF_8));
+            //System.out.flush();
 
-            if (content instanceof LastHttpContent) {
+/*            if (content instanceof LastHttpContent) {
                 System.out.println("} END OF CONTENT");
-            }
+            }*/
         }
     }
 
