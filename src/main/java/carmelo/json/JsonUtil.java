@@ -66,22 +66,5 @@ public class JsonUtil {
 		jb.endObject();
 		return jb.toBytes();
 	}
-	
-	
-	
-	public static void main(String[] args) {
-		JsonBuilder jb1 = new JsonBuilder();
-		jb1.startObject();
-		jb1.endObject();
-		
-		JsonBuilder jb = new JsonBuilder();
-		jb.startObject();
-		jb.writeKey("responseType");
-		jb.writeValue(1);
-		jb.writeKey("data");
-		jb.writeValue(new String(jb1.toBytes()));
-		jb.endObject();
-		System.out.println(new String(jb.toBytes()));
-	}
 
 }

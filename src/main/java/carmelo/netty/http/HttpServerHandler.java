@@ -57,51 +57,58 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof HttpRequest) {
-            HttpRequest httpRequest = (HttpRequest) msg;
-            this.currHttpRequest = httpRequest;
-            if (httpRequest.getMethod().equals(HttpMethod.GET)){
-            	Pattern p = Pattern.compile(".*/command=(.*)\\?(.*)"); 
-            	Matcher m = p.matcher(httpRequest.getUri()); 
-            	if (m.matches()){
-            		command = m.group(1);
-            		params = m.group(2);
-            	}
-            }
-            else if (httpRequest.getMethod().equals(HttpMethod.POST)){
-            	Pattern p = Pattern.compile("http://(.*):(.*)/command=(.*)"); 
-            	Matcher m = p.matcher(httpRequest.getUri()); 
-            	if (m.matches()){
-            		command = m.group(3);
-            	}
-            }
-        }
-        
-        if (msg instanceof HttpContent) {
-        	HttpContent httpContent = (HttpContent) msg;
-        	if (currHttpRequest.getMethod().equals(HttpMethod.POST)){
-        		params = httpContent.content().copy().toString();
-        	}
-        	
-            Request request = new Request(0, command, params, "0", ctx);
-            Response response = servlet.service(request);
-            
-            ByteBuf responseBuf = Unpooled.wrappedBuffer(response.getContents());
-            
-            
-            FullHttpResponse httpResponse = new DefaultFullHttpResponse(HTTP_1_1, OK, responseBuf);
-            httpResponse.headers().set(CONTENT_TYPE, "text/plain");
-            httpResponse.headers().set(CONTENT_LENGTH, httpResponse.content().readableBytes());
+    public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
+    	
+    	servlet.getExecutor().execute(new Runnable() {
+			public void run() {
+				if (msg instanceof HttpRequest) {
+		            HttpRequest httpRequest = (HttpRequest) msg;
+		            currHttpRequest = httpRequest;
+		            if (httpRequest.getMethod().equals(HttpMethod.GET)){
+		            	Pattern p = Pattern.compile(".*/command=(.*)\\?(.*)"); 
+		            	Matcher m = p.matcher(httpRequest.getUri()); 
+		            	if (m.matches()){
+		            		command = m.group(1);
+		            		params = m.group(2);
+		            	}
+		            }
+		            else if (httpRequest.getMethod().equals(HttpMethod.POST)){
+		            	Pattern p = Pattern.compile("http://(.*):(.*)/command=(.*)"); 
+		            	Matcher m = p.matcher(httpRequest.getUri()); 
+		            	if (m.matches()){
+		            		command = m.group(3);
+		            	}
+		            }
+		        }
+		        
+		        if (msg instanceof HttpContent) {
+		        	HttpContent httpContent = (HttpContent) msg;
+		        	if (currHttpRequest.getMethod().equals(HttpMethod.POST)){
+		        		params = httpContent.content().copy().toString();
+		        	}
+		        	
+		            Request request = new Request(0, command, params, "0", ctx);
+		            Response response = servlet.service(request);
+		            
+		            ByteBuf responseBuf = Unpooled.wrappedBuffer(response.getContents());
+		            
+		            
+		            FullHttpResponse httpResponse = new DefaultFullHttpResponse(HTTP_1_1, OK, responseBuf);
+		            httpResponse.headers().set(CONTENT_TYPE, "text/plain");
+		            httpResponse.headers().set(CONTENT_LENGTH, httpResponse.content().readableBytes());
 
-            boolean keepAlive = isKeepAlive(currHttpRequest);
-            if (!keepAlive) {
-                ctx.write(httpResponse).addListener(ChannelFutureListener.CLOSE);
-            } else {
-                httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
-                ctx.write(httpResponse);
-            }
-        }
+		            boolean keepAlive = isKeepAlive(currHttpRequest);
+		            if (!keepAlive) {
+		                ctx.write(httpResponse).addListener(ChannelFutureListener.CLOSE);
+		            } else {
+		                httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
+		                ctx.write(httpResponse);
+		            }
+		        }
+			}
+    	});
+    	
+        
     }
 
     @Override

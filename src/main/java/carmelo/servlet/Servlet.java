@@ -17,6 +17,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.net.JarURLConnection;
@@ -43,6 +46,9 @@ import carmelo.common.Configuration;
 public class Servlet {
 	
 	private static Map<String, ActionInvocation> actionMap = new HashMap<String, ActionInvocation>();
+	
+	private ThreadPoolExecutor executor = new ThreadPoolExecutor(8, 24, 2000, TimeUnit.MILLISECONDS,
+            new ArrayBlockingQueue<Runnable>(5));
 	
 	/**
 	 * initiation
@@ -231,6 +237,10 @@ public class Servlet {
                 }  
             }  
         }  
-    }  
+    }
+
+	public ThreadPoolExecutor getExecutor() {
+		return executor;
+	}
 
 }
