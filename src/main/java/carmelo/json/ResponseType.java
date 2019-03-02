@@ -6,7 +6,11 @@ public enum ResponseType {
 
 	FAIL(2),
 
-	PUSH(3);
+	PUSH(3),
+	
+	EXCEPTION(4),
+	
+	UNLOGIN(5);
 	
 	private int type;
 	

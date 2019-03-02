@@ -56,6 +56,17 @@ public class JsonUtil {
 		return jb.toBytes();
 	}
 	
+	public static byte[] buildJsonException() {
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.EXCEPTION.getType());
+		jb.writeKey("data");
+		jb.writeValue("");
+		jb.endObject();
+		return jb.toBytes();
+	}
+	
 	public static byte[] buildJsonFail(String msg) {
 		JsonBuilder jb = new JsonBuilder();
 		jb.startObject();
@@ -63,6 +74,17 @@ public class JsonUtil {
 		jb.writeValue(ResponseType.FAIL.getType());
 		jb.writeKey("data");
 		jb.writeValue(msg);
+		jb.endObject();
+		return jb.toBytes();
+	}
+	
+	public static byte[] buildJsonUnlogin() {
+		JsonBuilder jb = new JsonBuilder();
+		jb.startObject();
+		jb.writeKey("responseType");
+		jb.writeValue(ResponseType.UNLOGIN.getType());
+		jb.writeKey("data");
+		jb.writeValue("");
 		jb.endObject();
 		return jb.toBytes();
 	}

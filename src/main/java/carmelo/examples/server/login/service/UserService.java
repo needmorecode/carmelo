@@ -10,6 +10,8 @@ import carmelo.examples.server.login.dto.TestDto;
 import carmelo.json.JsonBuilder;
 import carmelo.json.JsonUtil;
 import carmelo.json.ResponseType;
+import carmelo.log.CarmeloLogger;
+import carmelo.log.LogUtil;
 import carmelo.servlet.Request;
 import carmelo.session.Session;
 import carmelo.session.SessionConstants;
@@ -67,6 +69,8 @@ public class UserService {
 		session.getChannel().attr(SessionConstants.SESSION_ID).set(sessionId);
 		System.out.println("sessionId: " + sessionId);
 		
+		CarmeloLogger.LOGIN.info(LogUtil.buildLoginLog(userId));
+		
 		JsonBuilder builder = JsonUtil.initResponseJsonBuilder();
 		builder.startObject();
 		builder.writeKey("sessionId");
@@ -89,6 +93,8 @@ public class UserService {
 		
 		SessionManager.getInstance().destroySession(sessionId);
 		Users.removeUser(userId);
+		
+		CarmeloLogger.LOGIN.info(LogUtil.buildLogoutLog(userId));
 		
 		return JsonUtil.buildJsonSuccess();
 	}

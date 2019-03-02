@@ -35,6 +35,9 @@ import carmelo.session.SessionManager;
 import carmelo.session.Users;
 import carmelo.common.ClassUtil;
 import carmelo.common.Configuration;
+import carmelo.json.JsonUtil;
+import carmelo.log.CarmeloLogger;
+import carmelo.log.LogUtil;
 
 /**
  * 
@@ -74,12 +77,18 @@ public class Servlet {
 	 * @return
 	 */
 	public Response service(Request request){
-		// TODO should return even if exception occurs
+		Method method = null;
+		Session session = null;
+		ActionInvocation invocation = null;
 		try {
-			ActionInvocation invocation = actionMap.get(request.getCommand());
+			invocation = actionMap.get(request.getCommand());
 			Object object = invocation.getObject();
-			Method method = invocation.getMethod();
+			method = invocation.getMethod();
 			List<Object> params = new LinkedList<Object>();
+			StringBuilder paramsBuilder = new StringBuilder();
+			
+			session = this.getSessionFromRequest(request);
+			
 			for (int i = 0; i <= method.getParameterTypes().length - 1; i++){
 				Class<?> paramType = method.getParameterTypes()[i];
 				if (paramType.equals(Request.class))
@@ -90,27 +99,37 @@ public class Servlet {
 					    String paramName = ((PassParameter)annotation).name();
 					    String paramValue = request.getParamMap().get(paramName);
 					    params.add(ClassUtil.stringToObject(paramValue, paramType));
+					    if (paramsBuilder.length() != 0) {
+							paramsBuilder.append("&");
+						}
+						paramsBuilder.append(paramName).append("=").append(paramValue);
 					}
 					else if (annotation instanceof SessionParameter){
 						String paramName = ((SessionParameter)annotation).name();
-						Attribute<String> attr = request.getCtx().channel().attr(SessionConstants.SESSION_ID);
-						String sessionId = attr.get();
-						// TODO should return if null
-						Session session = SessionManager.getInstance().getSession(sessionId);
+						if (session == null)
+							return new Response(request.getId(), JsonUtil.buildJsonUnlogin());
 						Object paramValue = session.getParams().get(paramName);
 						params.add(paramValue);
+						
 					}
 				}
 				
 			}
+
 		
 			byte[] ret = (byte[])method.invoke(object, params.toArray());
-			System.out.println("find method: " + method.getName());
+			
+			session = this.getSessionFromRequest(request);
+			
+			Integer userId = session != null ? (Integer)session.getParams().get(SessionConstants.USER_ID) : null;
+			String interfaceLog = LogUtil.buildInterfaceLog(userId, invocation.getActionName(), invocation.getMethod().getName(), request.getCommand(), paramsBuilder);
+			CarmeloLogger.INTERFACE.info(interfaceLog);
 			return new Response(request.getId(), ret);
 		} catch (Exception e){
-			e.printStackTrace();
-			// TODO return exception state
-			return new Response(request.getId(), null);
+			Integer userId = session != null ? (Integer)session.getParams().get(SessionConstants.USER_ID) : null;
+			String exceptionLog = LogUtil.buildExceptionLog(userId, invocation != null ? invocation.getActionName() : null, invocation != null ? invocation.getMethod().getName() : null, request.getCommand());
+			CarmeloLogger.ERROR.error(exceptionLog, e);
+			return new Response(request.getId(), JsonUtil.buildJsonException());
 		}
 	}
 	
@@ -241,6 +260,22 @@ public class Servlet {
 
 	public ThreadPoolExecutor getExecutor() {
 		return executor;
+	}
+	
+	/**
+	 * get session from request
+	 * @param request
+	 * @return
+	 */
+	private Session getSessionFromRequest(Request request) {
+		Attribute<String> attr = request.getCtx().channel().attr(SessionConstants.SESSION_ID);
+		if (attr != null) {
+			String sessionId = attr.get();
+			if (sessionId != null) {
+				return SessionManager.getInstance().getSession(sessionId);
+			}
+		}
+		return null;
 	}
 
 }

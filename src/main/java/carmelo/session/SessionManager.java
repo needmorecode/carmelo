@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import carmelo.log.CarmeloLogger;
+import carmelo.log.LogUtil;
+
 public class SessionManager {
 	
 	private final static SessionManager instance = new SessionManager();
@@ -58,7 +61,9 @@ public class SessionManager {
 							if (session.isTimeout())
 							{
 								destroySession(session.getSessionId());
-								Users.removeUser((Integer)(session.getParams().get(SessionConstants.USER_ID)));
+								Integer userId = (Integer)(session.getParams().get(SessionConstants.USER_ID));
+								Users.removeUser(userId);
+								CarmeloLogger.LOGIN.info(LogUtil.buildLogoutLog(userId));
 							}
 						} catch(Exception e) {
 							e.printStackTrace();
