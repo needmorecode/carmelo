@@ -133,7 +133,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public byte[] doSomething(int userId, int id){
+	public byte[] tryPush(int userId){
 //		User user =userDao.get(1);
 //		userDao.getSession().evict(user);
 //		user = userDao.get(1);

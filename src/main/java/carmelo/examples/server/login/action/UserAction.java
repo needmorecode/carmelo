@@ -79,12 +79,11 @@ public class UserAction {
 	}
 	
 	/**
-	 * do something
-	 * @param id
+	 * try push
 	 * @return
 	 */
-	public byte[] doSomething(@SessionParameter(name = SessionConstants.USER_ID)int userId, @PassParameter(name = "id") int id){
-		return userService.doSomething(userId, id);
+	public byte[] tryPush(@SessionParameter(name = SessionConstants.USER_ID)int userId){
+		return userService.tryPush(userId);
 	}
 	
 	/**

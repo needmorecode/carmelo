@@ -17,6 +17,8 @@ public class CarmeloLogger {
 	
 	public static Logger LOGIN = LoggerFactory.getLogger("login");
 	
+	public static Logger TIMER = LoggerFactory.getLogger("timer");
+	
 	
 	public static void main(String args[]) {
 		CarmeloLogger.INTERFACE.info("interface");

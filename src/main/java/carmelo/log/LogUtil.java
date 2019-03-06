@@ -1,5 +1,6 @@
 package carmelo.log;
 
+import carmelo.timer.TimerTask;
 
 /**
  * log utility
@@ -57,6 +58,30 @@ public class LogUtil {
 	public static String buildLogoutLog(Integer userId) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("logout").append("#").append(userId);
+		return builder.toString();
+	}
+	
+	public static String buildTimerScheduleLog(TimerTask task) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("schedule").append("#").append(task.getTaskId()).append("#").append(task.getName()).append("#").append(task.getExecTime());
+		return builder.toString();
+	}
+	
+	public static String buildTimerCancelLog(TimerTask task) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("cancel").append("#").append(task.getTaskId()).append("#").append(task.getName()).append("#").append(task.getExecTime());
+		return builder.toString();
+	}
+	
+	public static String buildTimerStartLog(TimerTask task) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("start").append("#").append(task.getTaskId()).append("#").append(task.getName()).append("#").append(System.currentTimeMillis());
+		return builder.toString();
+	}
+	
+	public static String buildTimerEndLog(TimerTask task) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("end").append("#").append(task.getTaskId()).append("#").append(task.getName()).append("#").append(System.currentTimeMillis());
 		return builder.toString();
 	}
 

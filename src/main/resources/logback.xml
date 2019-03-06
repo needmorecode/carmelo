@@ -4,6 +4,7 @@
 		value="${start.home}/logs/interface" />
 	<property name="error" value="${start.home}/logs/error" />
 	<property name="login" value="${start.home}/logs/login" />
+	<property name="timer" value="${start.home}/logs/timer" />
 	<appender name="interface"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy
@@ -42,21 +43,38 @@
 			</pattern>
 		</encoder>
 	</appender>
+	
+	<appender name="timer"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${timer}_%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss,S}#%m%n
+			</pattern>
+		</encoder>
+	</appender>
 
 	<logger name="interface" additivity="false" level="INFO">
 		<appender-ref ref="interface" />
 	</logger>
-	>
+	
 
 	<logger name="error" additivity="false" level="WARN">
 		<appender-ref ref="error" />
 	</logger>
-	>
+	
 
 	<logger name="login" additivity="false" level="INFO">
 		<appender-ref ref="login" />
 	</logger>
-	>
+	
+	<logger name="timer" additivity="false" level="INFO">
+		<appender-ref ref="timer" />
+	</logger>
+	
 
 	<root level="INFO">
 	</root>
