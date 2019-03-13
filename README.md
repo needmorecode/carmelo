@@ -4,7 +4,7 @@ Carmelo is a fast, scalable Java server framework designed for online games. It 
 
 Start from here
 ----------------------------
-**Pre-requisites**: Please have Maven 3.x, Eclipse and MySQL 5.6.x installed. 
+**Pre-requisites**: Please have Java 1.8, Maven 3.x, Eclipse and MySQL 5.6.x installed. 
 
 Build
 -----
