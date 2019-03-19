@@ -1,9 +1,16 @@
 package carmelo.json;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.zip.DeflaterInputStream;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.alibaba.fastjson.JSONWriter;
 
@@ -16,10 +23,13 @@ public class JsonBuilder{
 	
 	private ByteArrayOutputStream out = new ByteArrayOutputStream();
 	
+	//private DeflaterOutputStream dout;
+	
 	private JSONWriter writer;
 	
 	public JsonBuilder(){
 		try {
+			//dout = new DeflaterOutputStream(out);
 			writer = new JSONWriter(new OutputStreamWriter(out, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -60,46 +70,30 @@ public class JsonBuilder{
     
     public byte[] toBytes() {
     	try {
-			writer.close();
-		} catch (IOException e) {
+    		writer.close();
+    		return JsonUtil.compress(out.toByteArray());
+    	} catch (IOException e) {
 			e.printStackTrace();
-		}
-    	return out.toByteArray();
+	    }	
+    	return null;
     }
     
-    public String toString() {
-    	return new String(this.toBytes());
-    }
+//    public String toString() {
+//    	return new String(this.toBytes());
+//    }
 
 	public static void main(String[] args) throws IOException {
-//		JsonBuilder ja1 = new JsonBuilder();
-//		ja1.startObject();
-//		ja1.endObject();
-		
-//		JsonBuilder ja = new JsonBuilder();
-//		ja.startObject();
-//		ja.writeKey("responseType");
-//		ja.writeValue(1);
-//		ja.writeKey("data");
-//		//ja.writeValue(new String(ja1.toBytes()));
-//		ja.endObject();
-//		String s = new String(ja.toBytes());
-//		System.out.println(s);
-		
-//		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		JSONWriter writer = new JSONWriter(new OutputStreamWriter(out, "UTF-8"));
-//		writer.startObject();
-//		writer.endObject();
-//		writer.close();
-//		String s = new String(out.toByteArray());
-//		System.out.println(s);
-		
 		JsonBuilder builder = new JsonBuilder();
-		builder.startObject();
-		builder.writeKey("sessionId");
-		builder.writeValue("123456");
-		builder.endObject();
-		//System.out.println(new String(JsonUtil.buildJson(ResponseType.SUCCESS, builder.toString())));
+		for (int i = 1; i <= 100; i++) {
+			builder.startObject();
+			builder.writeKey("sessionId");
+			builder.writeValue("123456");
+			builder.endObject();
+		}
+		byte[] bytes = builder.toBytes();
+		System.out.println(new String(bytes, "utf-8"));
+		System.out.println(JsonUtil.decompress(bytes));
 	}
+	
 
 }

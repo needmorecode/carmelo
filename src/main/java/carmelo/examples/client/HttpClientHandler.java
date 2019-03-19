@@ -1,7 +1,9 @@
 package carmelo.examples.client;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
+import carmelo.json.JsonUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -75,8 +77,12 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
         if (msg instanceof HttpContent) {
         	//System.out.println("HttpContent#######################");
             HttpContent content = (HttpContent) msg;
+            ByteBuf buf = content.content();
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.readBytes(bytes);
+            String decContent = JsonUtil.decompress(bytes);
 
-            System.out.print("response: " + content.content().toString(CharsetUtil.UTF_8));
+            System.out.print("response: " + decContent);
             //System.out.flush();
 
 /*            if (content instanceof LastHttpContent) {

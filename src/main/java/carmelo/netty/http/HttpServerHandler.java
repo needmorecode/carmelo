@@ -99,10 +99,10 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 
 		            boolean keepAlive = isKeepAlive(currHttpRequest);
 		            if (!keepAlive) {
-		                ctx.write(httpResponse).addListener(ChannelFutureListener.CLOSE);
+		                ctx.writeAndFlush(httpResponse).addListener(ChannelFutureListener.CLOSE);
 		            } else {
 		                httpResponse.headers().set(CONNECTION, Values.KEEP_ALIVE);
-		                ctx.write(httpResponse);
+		                ctx.writeAndFlush(httpResponse);
 		            }
 		        }
 			}

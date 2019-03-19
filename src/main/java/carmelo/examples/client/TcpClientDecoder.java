@@ -6,6 +6,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+import carmelo.json.JsonUtil;
 import carmelo.servlet.Response;
 
 public class TcpClientDecoder extends ByteToMessageDecoder {
@@ -30,8 +31,13 @@ public class TcpClientDecoder extends ByteToMessageDecoder {
 		int contentLength = totalLength - 4;
 		byte[] contentBytes = new byte[contentLength];
 		in.readBytes(contentBytes);
-		Response response = new Response(requestId, contentBytes);
-		System.err.println("receive reponse:" + requestId + " " + new String(contentBytes));
+		
+		// gzip uncompress
+		String decStr = JsonUtil.decompress(contentBytes);
+		
+		
+		Response response = new Response(requestId, decStr.getBytes());
+		System.err.println("receive reponse:" + requestId + " " + decStr);
 		out.add(response);
 	}
 }

@@ -1,5 +1,11 @@
 package carmelo.json;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONWriter;
 import com.alibaba.fastjson.serializer.JSONSerializer;
@@ -87,6 +93,49 @@ public class JsonUtil {
 		jb.writeValue("");
 		jb.endObject();
 		return jb.toBytes();
+	}
+	
+	/**
+	 * use gzip to compress
+	 * @param bytes
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] compress(byte[] bytes) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		GZIPOutputStream gzip;
+		try {
+			gzip = new GZIPOutputStream(out);
+			gzip.write(bytes);
+			gzip.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return out.toByteArray();
+	}
+
+	/**
+	 * use gzip to decompress
+	 * @param bytes
+	 * @return
+	 * @throws IOException
+	 */
+	public static String decompress(byte[] bytes) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+		GZIPInputStream gzip;
+		try {
+			gzip = new GZIPInputStream(in);
+			int n = 0;
+			byte[] buffer = new byte[256];
+			while ((n = gzip.read(buffer)) >= 0) {
+				out.write(buffer, 0, n);
+			}
+			return out.toString("UTF-8");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
