@@ -33,6 +33,8 @@ public class Configuration {
 	
 	public static final String HTTP_PUSH_PORT = "http.push.port";
 	
+	public static final String WEBSOCKET_PORT = "websocket.port";
+	
 	/**
 	 * get property
 	 * @param key

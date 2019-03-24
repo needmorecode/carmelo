@@ -1,4 +1,4 @@
-package carmelo.examples.client;
+package carmelo.examples.client.tcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

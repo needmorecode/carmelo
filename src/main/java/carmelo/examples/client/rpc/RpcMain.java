@@ -1,4 +1,4 @@
-package carmelo.examples.client;
+package carmelo.examples.client.rpc;
 
 import java.util.HashMap;
 import java.util.Map;

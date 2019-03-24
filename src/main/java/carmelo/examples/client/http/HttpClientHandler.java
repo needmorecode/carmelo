@@ -1,4 +1,4 @@
-package carmelo.examples.client;
+package carmelo.examples.client.http;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;

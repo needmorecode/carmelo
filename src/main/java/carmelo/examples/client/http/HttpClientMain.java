@@ -13,12 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package carmelo.examples.client;
+package carmelo.examples.client.http;
 
 import java.net.URI;
 
 import carmelo.common.Configuration;
-import carmelo.examples.client.HttpClientHandler;
+import carmelo.examples.client.http.HttpClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

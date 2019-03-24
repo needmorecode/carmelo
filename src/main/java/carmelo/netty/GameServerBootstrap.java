@@ -4,10 +4,13 @@ import carmelo.servlet.Servlet;
 import carmelo.common.Configuration;
 import carmelo.netty.http.HttpServerInitializer;
 import carmelo.netty.tcp.TcpServerInitializer;
+import carmelo.netty.websocket.WebSocketServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * game server bootstrap
@@ -68,22 +71,45 @@ public class GameServerBootstrap {
 		}.start();*/
 
 		// tcp channel
-		final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-		final EventLoopGroup workerGroup = new NioEventLoopGroup();
-		try {
-			ServerBootstrap b1 = new ServerBootstrap();
-			b1.group(bossGroup, workerGroup)
-					.channel(NioServerSocketChannel.class)
-					.childHandler(new TcpServerInitializer(servlet));
-			int port = Integer.parseInt(Configuration.getProperty(Configuration.TCP_PORT));
-			b1.bind(port).sync().channel().closeFuture().sync();
-
-		} catch (InterruptedException e) {
+		new Thread() {
+			public void run() {
+				final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+				final EventLoopGroup workerGroup = new NioEventLoopGroup();
+				try {
+					ServerBootstrap b1 = new ServerBootstrap();
+					b1.group(bossGroup, workerGroup)
+							.channel(NioServerSocketChannel.class)
+							.childHandler(new TcpServerInitializer(servlet));
+					int port = Integer.parseInt(Configuration.getProperty(Configuration.TCP_PORT));
+					b1.bind(port).sync().channel().closeFuture().sync();
+		
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+					bossGroup.shutdownGracefully();
+					workerGroup.shutdownGracefully();
+				}
+			}
+		}.start();
+		
+		// websocket channel
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        
+        
+        try{
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                           .childHandler(new WebSocketServerInitializer(servlet));
+            int port = Integer.parseInt(Configuration.getProperty(Configuration.WEBSOCKET_PORT));
+            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+            channelFuture.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			bossGroup.shutdownGracefully();
-			workerGroup.shutdownGracefully();
-		}
+		} finally{
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
 
 	}
 

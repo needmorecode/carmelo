@@ -71,6 +71,7 @@ public class JsonBuilder{
     public byte[] toBytes() {
     	try {
     		writer.close();
+    		//return out.toByteArray();
     		return JsonUtil.compress(out.toByteArray());
     	} catch (IOException e) {
 			e.printStackTrace();

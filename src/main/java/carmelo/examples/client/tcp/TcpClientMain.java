@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package carmelo.examples.client;
+package carmelo.examples.client.tcp;
 
 import java.util.Scanner;
 
