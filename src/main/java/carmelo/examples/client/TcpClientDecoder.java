@@ -32,7 +32,7 @@ public class TcpClientDecoder extends ByteToMessageDecoder {
 		byte[] contentBytes = new byte[contentLength];
 		in.readBytes(contentBytes);
 		
-		// gzip uncompress
+		// gzip decompress
 		String decStr = JsonUtil.decompress(contentBytes);
 		
 		

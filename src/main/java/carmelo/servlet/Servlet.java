@@ -27,6 +27,8 @@ import java.net.JarURLConnection;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.alibaba.fastjson.JSON;
+
 import carmelo.servlet.annotation.PassParameter;
 import carmelo.servlet.annotation.SessionParameter;
 import carmelo.session.Session;
@@ -82,6 +84,7 @@ public class Servlet {
 		ActionInvocation invocation = null;
 		try {
 			invocation = actionMap.get(request.getCommand());
+			boolean isRpc = isRpc(invocation.getActionName());
 			Object object = invocation.getObject();
 			method = invocation.getMethod();
 			List<Object> params = new LinkedList<Object>();
@@ -98,7 +101,10 @@ public class Servlet {
 					if (annotation instanceof PassParameter){
 					    String paramName = ((PassParameter)annotation).name();
 					    String paramValue = request.getParamMap().get(paramName);
-					    params.add(ClassUtil.stringToObject(paramValue, paramType));
+					    if (!isRpc)
+					    	params.add(ClassUtil.stringToObject(paramValue, paramType));
+					    else
+					    	params.add(JSON.parseObject(paramValue, paramType));
 					    if (paramsBuilder.length() != 0) {
 							paramsBuilder.append("&");
 						}
@@ -110,14 +116,20 @@ public class Servlet {
 							return new Response(request.getId(), JsonUtil.buildJsonUnlogin());
 						Object paramValue = session.getParams().get(paramName);
 						params.add(paramValue);
-						
 					}
 				}
 				
 			}
 
-		
-			byte[] ret = (byte[])method.invoke(object, params.toArray());
+			Object retObj = method.invoke(object, params.toArray());
+			byte[] ret = null;
+			if (isRpc) {
+				ret = JSON.toJSONString(retObj).getBytes();
+			}
+			else {
+				ret = (byte[])retObj;
+			}
+			//byte[] ret = (byte[])method.invoke(object, params.toArray());
 			
 			session = this.getSessionFromRequest(request);
 			
@@ -276,6 +288,15 @@ public class Servlet {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * check if it is rpc action
+	 * @param actionName
+	 * @return
+	 */
+	private boolean isRpc(String actionName) {
+		return actionName.startsWith("rpc");
 	}
 
 }

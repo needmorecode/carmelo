@@ -5,6 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
+/**
+ * 
+ * Try this hot update demo. First start TestHotUpdate, then start Attach, at last you will see the TestHotUpdate.class has been updated.
+ * @author needmorecode
+ *
+ */
 public class TestHotUpdate {
 	
 	public static void main(String args[]) throws IOException {
@@ -24,7 +30,7 @@ public class TestHotUpdate {
 		TestHotUpdate update = new TestHotUpdate();
 		update.test();
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
