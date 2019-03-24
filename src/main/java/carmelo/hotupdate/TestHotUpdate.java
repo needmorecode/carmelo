@@ -30,7 +30,7 @@ public class TestHotUpdate {
 		TestHotUpdate update = new TestHotUpdate();
 		update.test();
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(12000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
