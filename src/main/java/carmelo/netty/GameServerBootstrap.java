@@ -11,6 +11,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 
 /**
  * game server bootstrap
@@ -31,7 +33,7 @@ public class GameServerBootstrap {
 		// http channel
 		new Thread() {
 			public void run() {
-				EventLoopGroup bossGroup2 = new NioEventLoopGroup(1);
+				EventLoopGroup bossGroup2 = new NioEventLoopGroup();
 				EventLoopGroup workerGroup2 = new NioEventLoopGroup();
 				try {
 					ServerBootstrap b2 = new ServerBootstrap();
@@ -73,8 +75,9 @@ public class GameServerBootstrap {
 		// tcp channel
 		new Thread() {
 			public void run() {
-				final EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+				final EventLoopGroup bossGroup = new NioEventLoopGroup();
 				final EventLoopGroup workerGroup = new NioEventLoopGroup();
+				//final EventExecutorGroup businessGroup = new DefaultEventExecutorGroup(4);
 				try {
 					ServerBootstrap b1 = new ServerBootstrap();
 					b1.group(bossGroup, workerGroup)

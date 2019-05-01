@@ -52,7 +52,7 @@ public class Servlet {
 	
 	private static Map<String, ActionInvocation> actionMap = new HashMap<String, ActionInvocation>();
 	
-	private ThreadPoolExecutor executor = new ThreadPoolExecutor(8, 24, 2000, TimeUnit.MILLISECONDS,
+	private ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 2, 2000, TimeUnit.MILLISECONDS,
             new ArrayBlockingQueue<Runnable>(5));
 	
 	/**

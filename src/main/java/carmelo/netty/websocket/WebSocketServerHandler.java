@@ -23,8 +23,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
 	
 	@Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        //System.out.println("channelActive    ");
-        //ctx.channel().writeAndFlush(new TextWebSocketFrame("来自服务端: " + LocalDateTime.now()));
     }
 
     @Override
@@ -32,15 +30,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     	
     	Request request = this.decode(msg.text(), ctx);
     	
-    	servlet.getExecutor().execute(new Runnable() {
-			public void run() {
 				Response response = servlet.service(request);
 				ByteBuf bb = encode(response);
 		    	ctx.writeAndFlush(new BinaryWebSocketFrame(bb));
-			}
-    	});
     	
-        //ctx.channel().writeAndFlush(new TextWebSocketFrame("来自服务端: " + LocalDateTime.now()));
     	
     	
     	

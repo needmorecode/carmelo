@@ -11,10 +11,14 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 
 	private Servlet servlet;
+	
+	private final static EventExecutorGroup businessGroup = new DefaultEventExecutorGroup(8);;
 	
     public WebSocketServerInitializer(Servlet servlet){
     	this.servlet = servlet;
@@ -27,6 +31,6 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast("chunked", new ChunkedWriteHandler());
         pipeline.addLast("aggregator", new HttpObjectAggregator(8192));
         pipeline.addLast("protocol", new WebSocketServerProtocolHandler("/ws"));
-        pipeline.addLast("handler", new WebSocketServerHandler(servlet));
+        pipeline.addLast(businessGroup, "handler", new WebSocketServerHandler(servlet));
     }
 }

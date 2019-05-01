@@ -20,13 +20,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Request> {
 
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final Request request) throws Exception {
-    	servlet.getExecutor().execute(new Runnable() {
-			public void run() {
 				Response response = servlet.service(request);
 		    	ctx.writeAndFlush(response);
-			}
-    	});
-    	
     }
 
 

@@ -59,8 +59,6 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
     	
-    	servlet.getExecutor().execute(new Runnable() {
-			public void run() {
 				if (msg instanceof HttpRequest) {
 		            HttpRequest httpRequest = (HttpRequest) msg;
 		            currHttpRequest = httpRequest;
@@ -105,9 +103,6 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		                ctx.writeAndFlush(httpResponse);
 		            }
 		        }
-			}
-    	});
-    	
         
     }
 
