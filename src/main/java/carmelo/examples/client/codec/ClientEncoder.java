@@ -1,11 +1,11 @@
-package carmelo.examples.client.tcp;
+package carmelo.examples.client.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import carmelo.servlet.Request;
 
-public class TcpClientEncoder extends MessageToByteEncoder<Request> {
+public class ClientEncoder extends MessageToByteEncoder<Request> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Request request, ByteBuf out) throws Exception {

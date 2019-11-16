@@ -22,8 +22,6 @@ import java.net.URI;
 import java.util.Scanner;
 
 import carmelo.common.Configuration;
-import carmelo.examples.client.tcp.TcpClientDecoder;
-import carmelo.examples.client.tcp.TcpClientEncoder;
 import carmelo.examples.client.tcp.TcpClientHandler;
 import carmelo.examples.client.tcp.TcpClientMain;
 import carmelo.servlet.Request;

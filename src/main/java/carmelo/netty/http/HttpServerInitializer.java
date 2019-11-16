@@ -9,8 +9,6 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
-import carmelo.netty.tcp.TcpDecoder;
-import carmelo.netty.tcp.TcpEncoder;
 import carmelo.netty.tcp.TcpServerHandler;
 import carmelo.servlet.Servlet;
 

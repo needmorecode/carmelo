@@ -18,6 +18,8 @@ package carmelo.examples.client.tcp;
 import java.util.Scanner;
 
 import carmelo.common.Configuration;
+import carmelo.examples.client.codec.ClientDecoder;
+import carmelo.examples.client.codec.ClientEncoder;
 import carmelo.servlet.Request;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -61,8 +63,8 @@ public class TcpClientMain extends Thread{
              .handler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                	 ch.pipeline().addLast(new TcpClientDecoder()); 
-                	 ch.pipeline().addLast(new TcpClientEncoder());
+                	 ch.pipeline().addLast(new ClientDecoder()); 
+                	 ch.pipeline().addLast(new ClientEncoder());
                 	 ch.pipeline().addLast(new TcpClientHandler(firstMessageSize, TcpClientMain.this));
                  }
              });

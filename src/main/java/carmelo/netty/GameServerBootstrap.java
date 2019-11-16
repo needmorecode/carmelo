@@ -3,10 +3,18 @@ package carmelo.netty;
 import carmelo.servlet.Servlet;
 import carmelo.common.Configuration;
 import carmelo.netty.http.HttpServerInitializer;
+import carmelo.netty.kcp.KcpServerInitializer;
 import carmelo.netty.tcp.TcpServerInitializer;
 import carmelo.netty.websocket.WebSocketServerInitializer;
+import io.jpower.kcp.netty.ChannelOptionHelper;
+import io.jpower.kcp.netty.UkcpChannel;
+import io.jpower.kcp.netty.UkcpChannelOption;
+import io.jpower.kcp.netty.UkcpServerChannel;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.bootstrap.UkcpServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -95,6 +103,33 @@ public class GameServerBootstrap {
 			}
 		}.start();
 		
+        // kcp channel
+		new Thread() {
+			public void run() {
+				final EventLoopGroup group = new NioEventLoopGroup();
+		        try {
+		            UkcpServerBootstrap b = new UkcpServerBootstrap();
+		            b.group(group)
+		                    .channel(UkcpServerChannel.class)
+		                    .childHandler(new KcpServerInitializer(servlet));
+		            ChannelOptionHelper.nodelay(b, true, 20, 2, true)
+		                    .childOption(UkcpChannelOption.UKCP_MTU, 512);
+		
+		            // Start the server.
+		            int port = Integer.parseInt(Configuration.getProperty(Configuration.KCP_PORT));
+		            ChannelFuture f = b.bind(port).sync();
+		
+		            // Wait until the server socket is closed.
+		            f.channel().closeFuture().sync();
+		        }  catch (InterruptedException e) {
+					e.printStackTrace();
+				} finally {
+		            // Shut down all event loops to terminate all threads.
+		            group.shutdownGracefully();
+		        }
+			}
+		}.start();
+		
 		// websocket channel
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -113,6 +148,9 @@ public class GameServerBootstrap {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+        
+
+		
 
 	}
 

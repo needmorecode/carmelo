@@ -1,4 +1,4 @@
-package carmelo.examples.client.tcp;
+package carmelo.examples.client.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,7 +9,7 @@ import java.util.List;
 import carmelo.json.JsonUtil;
 import carmelo.servlet.Response;
 
-public class TcpClientDecoder extends ByteToMessageDecoder {
+public class ClientDecoder extends ByteToMessageDecoder {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in,

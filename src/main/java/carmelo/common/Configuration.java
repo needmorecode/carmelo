@@ -35,6 +35,8 @@ public class Configuration {
 	
 	public static final String WEBSOCKET_PORT = "websocket.port";
 	
+	public static final String KCP_PORT = "kcp.port";
+	
 	/**
 	 * get property
 	 * @param key

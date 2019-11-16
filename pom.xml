@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<version>4.0.28.Final</version>
+			<version>4.1.41.Final</version>
 		</dependency>
 
 		<dependency>
@@ -267,6 +267,11 @@
 	        <scope>system</scope>  
 	        <systemPath>${toolsjar}</systemPath>  
    		</dependency>  
+   		<dependency>
+            <groupId>io.jpower.kcp</groupId>
+            <artifactId>kcp-netty</artifactId>
+            <version>1.4.8</version>
+        </dependency>
 	</dependencies>
 	
 

@@ -1,4 +1,4 @@
-package carmelo.netty.tcp;
+package carmelo.netty.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import carmelo.servlet.Request;
 
-public class TcpDecoder extends ByteToMessageDecoder {
+public class ServerDecoder extends ByteToMessageDecoder {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in,

@@ -1,4 +1,4 @@
-package carmelo.netty.tcp;
+package carmelo.netty.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,7 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 import carmelo.servlet.Response;
 
-public class TcpEncoder extends MessageToByteEncoder<Response> {
+public class ServerEncoder extends MessageToByteEncoder<Response> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Response response, ByteBuf out) throws Exception {
