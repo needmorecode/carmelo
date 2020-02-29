@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 
 public class Timer {
 
-	private List<TimerTask> tasks = new LinkedList<TimerTask>();
+	private PriorityQueue<TimerTask> tasks = new PriorityQueue<TimerTask>();
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(5);
 
@@ -32,17 +32,7 @@ public class Timer {
 				tasks.notify();
 			}
 			else {
-				boolean hasAdded = false;
-				for (int i = 0; i <= tasks.size() - 1; i++) {
-					TimerTask task = tasks.get(i);
-					if (task.getExecTime() > newTask.getExecTime()) {
-						tasks.add(i, newTask);
-						hasAdded = true;
-						break;
-					}
-				}
-				if (!hasAdded)
-					tasks.add(newTask);
+				tasks.add(newTask);
 			}
 		}
 		CarmeloLogger.TIMER.info(LogUtil.buildTimerScheduleLog(newTask));
@@ -59,9 +49,9 @@ public class Timer {
 						}
 						long currTime = System.currentTimeMillis();
 						while (!tasks.isEmpty()) {
-							TimerTask task = tasks.get(0);
+							TimerTask task = tasks.peek();
 							if (task.getExecTime() <= currTime) {
-								tasks.remove(0);
+								tasks.poll();
 								
 								if (!task.isCancelled())
 									executor.execute(task);
