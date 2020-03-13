@@ -22,7 +22,7 @@ public class Timer {
 	private TimerThread timerThread = new TimerThread();
 	
 	public Timer() {
-		timerThread.start();
+		timerThread.start(); 
 	}
 	
 	public void schedule(TimerTask newTask) {
