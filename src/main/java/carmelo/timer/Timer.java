@@ -105,7 +105,7 @@ public class Timer {
 			@Override
 			public void exec() {
 				System.out.println("hit4");
-			}
+			} 
 			
 		});
 		
