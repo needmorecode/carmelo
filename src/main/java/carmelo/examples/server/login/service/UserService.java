@@ -34,8 +34,9 @@ public class UserService {
 	@Transactional
 	public byte[] register(String name, String password) {
 		User user = userDao.getUser(name);
-		if (user != null)
+		if (user != null) {
 			return JsonUtil.buildJsonFail("already registered");
+		}
 		
 		user = new User();
 		user.setName(name);
@@ -54,11 +55,12 @@ public class UserService {
 	 */
 	public byte[] login(String name, String password, Request request) {
 		User user = userDao.getUser(name);
-		if (user == null)
+		if (user == null) {
 			return JsonUtil.buildJsonFail("user not exists");
-		if (!user.getPassword().equals(password))
+		}
+		if (!user.getPassword().equals(password)) {
 			return JsonUtil.buildJsonFail("wrong password");
-		
+		}
 		int userId = user.getId();
 		Session session = SessionManager.getInstance().createSession();
 		session.getParams().put(SessionConstants.USER_ID, userId);
@@ -88,9 +90,9 @@ public class UserService {
 	 */
 	public byte[] logout(int userId){
 		String sessionId = Users.getSessionId(userId);
-		if (sessionId == null)
+		if (sessionId == null) {
 			return JsonUtil.buildJsonFail("already offline");
-		
+		}
 		SessionManager.getInstance().destroySession(sessionId);
 		Users.removeUser(userId);
 		

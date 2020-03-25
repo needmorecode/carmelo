@@ -101,10 +101,12 @@ public class Servlet {
 					if (annotation instanceof PassParameter){
 					    String paramName = ((PassParameter)annotation).name();
 					    String paramValue = request.getParamMap().get(paramName);
-					    if (!isRpc)
+					    if (!isRpc) {
 					    	params.add(ClassUtil.stringToObject(paramValue, paramType));
-					    else
+					    }
+					    else {
 					    	params.add(JSON.parseObject(paramValue, paramType));
+					    }
 					    if (paramsBuilder.length() != 0) {
 							paramsBuilder.append("&");
 						}
@@ -112,8 +114,9 @@ public class Servlet {
 					}
 					else if (annotation instanceof SessionParameter){
 						String paramName = ((SessionParameter)annotation).name();
-						if (session == null)
+						if (session == null) {
 							return new Response(request.getId(), JsonUtil.buildJsonUnlogin());
+						}
 						Object paramValue = session.getParams().get(paramName);
 						params.add(paramValue);
 					}
@@ -205,10 +208,11 @@ public class Servlet {
                                                         .length() - 6);  
                                         try {  
                                             // if it ends with Action
-                                        	if (className.endsWith("Action"))
-                                            classes.add(Class  
-                                                    .forName(packageName + '.'  
-                                                            + className));  
+                                        	if (className.endsWith("Action")) {
+                                        		classes.add(Class  
+                                        				.forName(packageName + '.'  
+                                        						+ className)); 
+                                        	}
                                         } catch (ClassNotFoundException e) {  
                                             e.printStackTrace();  
                                         }  
@@ -244,6 +248,7 @@ public class Servlet {
         }  
         File[] dirfiles = dir.listFiles(new FileFilter() {  
             // define the filter policy: ending with .class  
+            @Override
             public boolean accept(File file) {  
                 return (recursive && file.isDirectory())  
                         || (file.getName().endsWith(".class"));  
@@ -261,9 +266,10 @@ public class Servlet {
                         file.getName().length() - 6);  
                 try {  
                     // if ending with Action, put it into the set
-                	if (className.endsWith("Action"))
+                	if (className.endsWith("Action")) {
                 		classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className));    
-                                } catch (ClassNotFoundException e) {  
+                	}
+                } catch (ClassNotFoundException e) {  
                     e.printStackTrace();  
                 }  
             }  

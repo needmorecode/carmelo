@@ -69,6 +69,7 @@ public class WebSocketClientMain extends Thread {
 		this.port = port;
 	}
 
+    @Override
 	public void run() {
 		// Configure the client.
 		EventLoopGroup group = new NioEventLoopGroup();

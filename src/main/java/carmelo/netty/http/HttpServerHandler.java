@@ -46,6 +46,10 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     private String command;
     
     private String params;
+    
+    private static final Pattern httpGetPattern = Pattern.compile(".*/command=(.*)\\?(.*)");
+    
+    private static final Pattern httpPostPattern = Pattern.compile("http://(.*):(.*)/command=(.*)");
 	
 	public HttpServerHandler(Servlet servlet){
 		this.servlet = servlet;
@@ -63,16 +67,14 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
 		            HttpRequest httpRequest = (HttpRequest) msg;
 		            currHttpRequest = httpRequest;
 		            if (httpRequest.getMethod().equals(HttpMethod.GET)){
-		            	Pattern p = Pattern.compile(".*/command=(.*)\\?(.*)"); 
-		            	Matcher m = p.matcher(httpRequest.getUri()); 
+		            	Matcher m = httpGetPattern.matcher(httpRequest.getUri()); 
 		            	if (m.matches()){
 		            		command = m.group(1);
 		            		params = m.group(2);
 		            	}
 		            }
 		            else if (httpRequest.getMethod().equals(HttpMethod.POST)){
-		            	Pattern p = Pattern.compile("http://(.*):(.*)/command=(.*)"); 
-		            	Matcher m = p.matcher(httpRequest.getUri()); 
+		            	Matcher m = httpPostPattern.matcher(httpRequest.getUri()); 
 		            	if (m.matches()){
 		            		command = m.group(3);
 		            	}

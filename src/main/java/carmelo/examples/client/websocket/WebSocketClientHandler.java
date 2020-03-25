@@ -28,6 +28,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
     	this.client = client;
     }
     
+    @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         this.handshakeFuture = ctx.newPromise();
     }
@@ -57,6 +58,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
     	handshaker.handshake(ctx.channel());
     }
 
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         Channel ch = ctx.channel();
         FullHttpResponse response;

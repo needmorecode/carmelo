@@ -52,6 +52,8 @@ public class TcpClientMain extends Thread{
         this.firstMessageSize = firstMessageSize;
     }
 
+    
+    @Override
     public void run() {
         // Configure the client.
         EventLoopGroup group = new NioEventLoopGroup();
@@ -118,10 +120,12 @@ public class TcpClientMain extends Thread{
              Scanner sc = new Scanner(line);
              String command = sc.next();
              String params = null;
-             if (sc.hasNext())
+             if (sc.hasNext()) {
             	 params = sc.next();
-             else
+             }
+             else {
             	 params = "";
+             }
              client.sendMsg(requestId, command, params);
              requestId++;
         }

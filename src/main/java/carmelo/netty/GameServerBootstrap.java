@@ -40,6 +40,7 @@ public class GameServerBootstrap {
 		
 		// http channel
 		new Thread() {
+		    @Override
 			public void run() {
 				EventLoopGroup bossGroup2 = new NioEventLoopGroup();
 				EventLoopGroup workerGroup2 = new NioEventLoopGroup();
@@ -82,6 +83,7 @@ public class GameServerBootstrap {
 
 		// tcp channel
 		new Thread() {
+		    @Override
 			public void run() {
 				final EventLoopGroup bossGroup = new NioEventLoopGroup();
 				final EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -105,6 +107,7 @@ public class GameServerBootstrap {
 		
         // kcp channel
 		new Thread() {
+		    @Override
 			public void run() {
 				final EventLoopGroup group = new NioEventLoopGroup();
 		        try {

@@ -25,10 +25,12 @@ public class UserDao extends BaseDao<User, Integer>{
 		SimpleExpression exp1 = Restrictions.eq("name", name);
 		Criteria criteria = this.createCriteria(exp1);
 		List<User> users = (List<User>)criteria.list();
-		if (users == null || users.isEmpty())
+		if (users == null || users.isEmpty()) {
 			return null;
-		else
+		}
+		else {
 			return users.get(0);
+		}
 	}
 
 }

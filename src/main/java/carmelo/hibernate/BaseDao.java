@@ -124,9 +124,9 @@ public class BaseDao<T, PK extends java.io.Serializable> {
 
 	public void deleteAll(Collection<?> entities) {
 
-		if (entities == null)
-
+		if (entities == null) {
 			return;
+		}
 
 		for (Object entity : entities) {
 

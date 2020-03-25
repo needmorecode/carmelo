@@ -21,8 +21,9 @@ public class ClassUtil {
 		else if (clazz == String.class){
 			return string;
 		}
-		else
+		else {
 			return null;
+		}
 	}
 
 }

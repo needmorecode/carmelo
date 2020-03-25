@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 import carmelo.log.CarmeloLogger;
 import carmelo.log.LogUtil;
@@ -17,7 +18,7 @@ public class Timer {
 
 	private PriorityQueue<TimerTask> tasks = new PriorityQueue<TimerTask>();
 	
-	private ExecutorService executor = Executors.newFixedThreadPool(5);
+	private ExecutorService executor = Executors.newFixedThreadPool(8);
 
 	private TimerThread timerThread = new TimerThread();
 	
@@ -40,6 +41,7 @@ public class Timer {
 
 	class TimerThread extends Thread {
 
+	    @Override
 		public void run() {
 			while (true) {
 				try {
@@ -53,11 +55,13 @@ public class Timer {
 							if (task.getExecTime() <= currTime) {
 								tasks.poll();
 								
-								if (!task.isCancelled())
-									executor.execute(task); 
+								if (!task.isCancelled()) {
+									executor.execute(task);
+								}
 							}
-							else 
+							else {
 								break;
+							}
 						}
 					}
 					
@@ -109,6 +113,7 @@ public class Timer {
 			
 		});
 		
+		ReentrantLock lock = new ReentrantLock(true);
 //		for (int i = 1; i <= 15; i++) {
 //			timer.schedule(new TimerTask("myTask", System.currentTimeMillis() + 1000) {
 //

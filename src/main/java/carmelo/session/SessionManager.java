@@ -33,12 +33,15 @@ public class SessionManager {
 		for (int i = 1; i <= RANDOM_BIT_NUM; i++) {
 			int randomNum = new Random().nextInt(10 + 26 + 26);
 			char c;
-			if (randomNum <= 9)
+			if (randomNum <= 9) {
 				c = (char) ('0' + randomNum);
-			else if (randomNum <= 35)
+			}
+			else if (randomNum <= 35) {
 				c = (char) ('A' + randomNum - 10);
-			else
+			}
+			else {
 				c = (char) ('a' + randomNum - 36);
+			}
 			sessionIdBuilder.append(c);
 		}
 		sessionIdBuilder.append(System.currentTimeMillis());
@@ -54,6 +57,7 @@ public class SessionManager {
 
 	public void initThread() {
 		new Thread() {
+		    @Override
 			public void run() {
 				while (true) {
 					for (Session session : sessionMap.values()) {
